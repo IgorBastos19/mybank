@@ -1,0 +1,90 @@
+/* style.css */
+
+/* Reset some default styles */
+body,
+h1,
+h2,
+p,
+ul {
+  margin: 0;
+  padding: 0;
+}
+
+/* Body styling */
+body {
+  font-family: Arial, sans-serif;
+}
+
+/* Header styling */
+header {
+  background-color: #f8f9fa;
+  padding: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+header .navbar {
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+}
+
+header .navbar-brand {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #343a40;
+  text-decoration: none;
+}
+
+header .navbar-nav .nav-item .nav-link {
+  color: #343a40;
+  text-decoration: none;
+  font-size: 1rem;
+  margin: 0.5rem 0;
+}
+
+header .navbar-nav .nav-item .nav-link svg {
+  margin-right: 0.5rem;
+}
+
+@media (max-width: 992px) {
+  header .navbar-nav .nav-item .nav-link {
+    margin: 0.5rem 0;
+  }
+}
+
+/* Main content styling */
+main .container {
+  padding: 2rem 1rem;
+}
+
+main .saldo,
+main .extrato {
+  margin-bottom: 2rem;
+}
+
+main .saldo h1,
+main .extrato h1 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+main .saldo h2 {
+  font-size: 1.5rem;
+  color: #28a745;
+}
+
+main .extrato table {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+main .linkExtrato {
+  display: inline-block;
+  margin-top: 1rem;
+  color: #007bff;
+  text-decoration: none;
+}
+
+main .linkExtrato:hover {
+  text-decoration: underline;
+}
