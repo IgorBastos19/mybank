@@ -12,3 +12,42 @@ document.addEventListener("DOMContentLoaded", () => {
     navbar.classList.toggle("show");
   });
 });
+
+// Array para armazenar as transações
+let transactions = [];
+
+// Função para adicionar uma transação
+function addTransaction(amount, description, date) {
+  // Verifica se os parâmetros são válidos
+  if (typeof amount !== "number" || amount <= 0) {
+    console.log("Por favor, insira um valor válido para a quantia.");
+    return;
+  }
+
+  if (typeof description !== "string" || description.trim() === "") {
+    console.log("Por favor, insira uma descrição válida.");
+    return;
+  }
+
+  if (!(date instanceof Date) || isNaN(date)) {
+    console.log("Por favor, insira uma data válida.");
+    return;
+  }
+
+  // Cria um objeto de transação
+  const transaction = {
+    amount: amount,
+    description: description,
+    date: date,
+  };
+
+  // Adiciona a transação ao array
+  transactions.push(transaction);
+  console.log("Transação adicionada com sucesso:", transaction);
+}
+
+// Exemplo de uso da função
+addTransaction(150.5, "Depósito", new Date("2024-05-26"));
+addTransaction(75.25, "Pagamento de conta", new Date("2024-05-27"));
+
+console.log("Todas as transações:", transactions);
