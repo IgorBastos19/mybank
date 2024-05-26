@@ -3,3 +3,12 @@ src =
 integrity =
   "sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+6BAMw1LMwNLD69Npy4HI+N9+8BxB";
 crossorigin = "anonymous";
+
+document.addEventListener("DOMContentLoaded", () => {
+  const menuToggle = document.getElementById("menu-toggle");
+  const navbar = document.getElementById("navbar");
+
+  menuToggle.addEventListener("click", () => {
+    navbar.classList.toggle("show");
+  });
+});
