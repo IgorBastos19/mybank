@@ -69,32 +69,32 @@
 
     <main class="container mt-5">
         <h1 class="mb-4">Formulário de Transação</h1>
-        <form>
+        <form id="transactionForm">
             <div class="mb-3">
                 <label for="id" class="form-label">ID</label>
-                <input type="number" class="form-control" id="id" placeholder="Digite o ID">
+                <input type="number" class="form-control" id="id" placeholder="Digite o ID" required>
             </div>
             <div class="mb-3">
                 <label for="valor" class="form-label">Valor</label>
-                <input type="text" class="form-control" id="valor" placeholder="Digite o valor">
+                <input type="text" class="form-control" id="valor" placeholder="Digite o valor" required>
             </div>
             <div class="mb-3">
                 <label for="tipo" class="form-label">Tipo</label>
-                <select class="form-select" id="tipo">
+                <select class="form-select" id="tipo" required>
                     <option value="cash-in">Cash-In</option>
                     <option value="cash-out">Cash-Out</option>
                 </select>
             </div>
             <div class="mb-3">
-                <label for="tipo" class="form-label">Conta</label>
-                <select class="form-select" id="tipo">
-                    <option value="cash-in">Itau</option>
-                    <option value="cash-out">Xp</option>
+                <label for="conta" class="form-label">Conta</label>
+                <select class="form-select" id="conta" required>
+                    <option value="itau">Itau</option>
+                    <option value="xp">Xp</option>
                 </select>
             </div>
             <div class="mb-3">
                 <label for="classe" class="form-label">Classe</label>
-                <select class="form-select" id="classe">
+                <select class="form-select" id="classe" required>
                     <option value="salario">Salário</option>
                     <option value="energia">Energia</option>
                     <option value="investimento">Investimento</option>
@@ -113,18 +113,39 @@
             </div>
             <div class="mb-3">
                 <label for="split" class="form-label">Split</label>
-                <select class="form-select" id="split">
+                <select class="form-select" id="split" required>
                     <option value="sim">Sim</option>
                     <option value="nao">Não</option>
                 </select>
             </div>
             <div class="mb-3">
-                <label for="id" class="form-label">Descrição</label>
-                <input type="number" class="form-control" id="id" placeholder="Digite um pouco sobre a transação">
+                <label for="descricao" class="form-label">Descrição</label>
+                <input type="text" class="form-control" id="descricao" placeholder="Digite um pouco sobre a transação"
+                    required>
             </div>
             <button type="submit" class="btn btn-primary">Enviar</button>
         </form>
+
+        <h2 class="mt-4">Lista de Transações</h2>
+        <ul id="transactionList"></ul>
+
+        <table class="table table-striped mt-3">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Valor</th>
+                    <th>Tipo</th>
+                    <th>Conta</th>
+                    <th>Classe</th>
+                    <th>Split</th>
+                    <th>Descrição</th>
+                </tr>
+            </thead>
+            <tbody id="transactionTableBody">
+            </tbody>
+        </table>
     </main>
+
 
 
 </body>

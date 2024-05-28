@@ -13,12 +13,38 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
-// Array para armazenar as transações
+// script.js
+
 let transactions = [];
 
+// Função para carregar transações do localStorage
+function loadTransactions() {
+  const savedTransactions = localStorage.getItem("transactions");
+  if (savedTransactions) {
+    transactions = JSON.parse(savedTransactions);
+  }
+}
+
+// Função para salvar transações no localStorage
+function saveTransactions() {
+  localStorage.setItem("transactions", JSON.stringify(transactions));
+}
 // Função para adicionar uma transação
-function addTransaction(amount, description, date) {
+function addTransaction(
+  id,
+  amount,
+  type,
+  account,
+  category,
+  split,
+  description
+) {
   // Verifica se os parâmetros são válidos
+  if (typeof id !== "number" || id <= 0) {
+    console.log("Por favor, insira um ID válido.");
+    return;
+  }
+
   if (typeof amount !== "number" || amount <= 0) {
     console.log("Por favor, insira um valor válido para a quantia.");
     return;
@@ -29,25 +55,75 @@ function addTransaction(amount, description, date) {
     return;
   }
 
-  if (!(date instanceof Date) || isNaN(date)) {
-    console.log("Por favor, insira uma data válida.");
-    return;
-  }
-
   // Cria um objeto de transação
   const transaction = {
+    id: id,
     amount: amount,
+    type: type,
+    account: account,
+    category: category,
+    split: split,
     description: description,
-    date: date,
   };
 
   // Adiciona a transação ao array
   transactions.push(transaction);
   console.log("Transação adicionada com sucesso:", transaction);
+  // Salva as transações no localStorage
+  saveTransactions();
+  // Atualiza a tabela de transações exibida
+  displayTransactions();
 }
 
-// Exemplo de uso da função
-addTransaction(150.5, "Depósito", new Date("2024-05-26"));
-addTransaction(75.25, "Pagamento de conta", new Date("2024-05-27"));
+// Função para exibir as transações na tabela
+function displayTransactions() {
+  const transactionTableBody = document.getElementById("transactionTableBody");
+  transactionTableBody.innerHTML = "";
 
-console.log("Todas as transações:", transactions);
+  transactions.forEach((transaction) => {
+    const row = document.createElement("tr");
+
+    row.innerHTML = `
+            <td>${transaction.id}</td>
+            <td>R$ ${transaction.amount.toFixed(2).replace(".", ",")}</td>
+            <td>${transaction.type}</td>
+            <td>${transaction.account}</td>
+            <td>${transaction.category}</td>
+            <td>${transaction.split}</td>
+            <td>${transaction.description}</td>
+        `;
+
+    transactionTableBody.appendChild(row);
+  });
+}
+
+// Adiciona um listener para o evento de submissão do formulário
+document.addEventListener("DOMContentLoaded", () => {
+  // Carrega as transações salvas do localStorage
+  loadTransactions();
+
+  // Exibe as transações ao carregar a página
+  displayTransactions();
+
+  const form = document.getElementById("transactionForm");
+
+  form.addEventListener("submit", (event) => {
+    event.preventDefault(); // Impede o envio do formulário
+
+    const id = parseInt(document.getElementById("id").value);
+    const amount = parseFloat(
+      document.getElementById("valor").value.replace(",", ".")
+    );
+    const type = document.getElementById("tipo").value;
+    const account = document.getElementById("conta").value;
+    const category = document.getElementById("classe").value;
+    const split = document.getElementById("split").value;
+    const description = document.getElementById("descricao").value;
+
+    addTransaction(id, amount, type, account, category, split, description);
+
+    form.reset(); // Limpa o formulário após a submissão
+  });
+});
+
+//funcao soma
