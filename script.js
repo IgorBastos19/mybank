@@ -58,7 +58,7 @@ function addTransaction(
   // Cria um objeto de transação
   const transaction = {
     id: id,
-    amount: amount,
+    amount: parseFloat(amount),
     type: type,
     account: account,
     category: category,
@@ -127,3 +127,23 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 //funcao soma
+function soma(transactions) {
+  let soma = 0;
+  for (let i = 0; i < transactions.length; i++) {
+    soma = soma + transactions[i].amount;
+  }
+  return soma;
+}
+
+function formatCurrency(value) {
+  return value.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+}
+
+// Atualiza o valor do saldo no HTML
+function atualizarSaldo() {
+  const saldoElement = document.getElementById("saldo");
+  const saldo = soma(transactions);
+  saldoElement.textContent = formatCurrency(saldo);
+}
+
+window.onload = atualizarSaldo;
