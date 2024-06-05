@@ -4,6 +4,8 @@ integrity =
   "sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+6BAMw1LMwNLD69Npy4HI+N9+8BxB";
 crossorigin = "anonymous";
 
+// Este trecho adiciona um listener para o evento DOMContentLoaded, que espera o carregamento completo do DOM. Ele configura a funcionalidade de alternância do menu, onde ao clicar no elemento com id menu-toggle, a classe show será adicionada ou removida do elemento com id navbar.
+
 document.addEventListener("DOMContentLoaded", () => {
   const menuToggle = document.getElementById("menu-toggle");
   const navbar = document.getElementById("navbar");
@@ -13,11 +15,12 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
-// script.js
+//Esta variável global armazena todas as transações.
 
 let transactions = [];
 
 // Função para carregar transações do localStorage
+
 function loadTransactions() {
   const savedTransactions = localStorage.getItem("transactions");
   if (savedTransactions) {
@@ -26,9 +29,11 @@ function loadTransactions() {
 }
 
 // Função para salvar transações no localStorage
+
 function saveTransactions() {
   localStorage.setItem("transactions", JSON.stringify(transactions));
 }
+
 // Função para adicionar uma transação
 function addTransaction(
   id,
@@ -45,7 +50,7 @@ function addTransaction(
     return;
   }
 
-  if (typeof amount !== "number" || amount <= 0) {
+  if (typeof amount !== "number") {
     console.log("Por favor, insira um valor válido para a quantia.");
     return;
   }
@@ -146,4 +151,113 @@ function atualizarSaldo() {
   saldoElement.textContent = formatCurrency(saldo);
 }
 
-window.onload = atualizarSaldo;
+//Total cash-in
+function totalCashIn() {
+  let cashIn = 0;
+  for (let i = 0; i < transactions.length; i++) {
+    if (transactions[i].type === "cash-in") {
+      cashIn = cashIn + transactions[i].amount;
+    }
+  }
+  return cashIn;
+}
+
+// Atualiza o valor do saldo no HTML
+function atualizarCashIn() {
+  const cashInElement = document.getElementById("cash-in");
+  const cashIn = totalCashIn();
+  cashInElement.textContent = formatCurrency(cashIn);
+}
+
+window.onload = function () {
+  atualizarSaldo();
+  atualizarCashIn();
+  atualizarCashOut();
+  atualizarQuantidade();
+  atualizarSplit();
+  atualizarSaldoItau();
+  atualizarSaldoXp();
+};
+
+//Total cash-out
+function totalCashOut() {
+  let cashOut = 0;
+  for (let i = 0; i < transactions.length; i++) {
+    if (transactions[i].type === "cash-out") {
+      cashOut = cashOut + transactions[i].amount;
+    }
+  }
+  return cashOut;
+}
+
+// Atualiza o valor do saldo no HTML
+function atualizarCashOut() {
+  const cashOutElement = document.getElementById("cash-out");
+  const cashOut = totalCashOut();
+  cashOutElement.textContent = formatCurrency(cashOut);
+}
+
+//quantidade de transaction
+function quantidadeTransaction() {
+  return transactions.length;
+}
+
+// Atualiza o valor do saldo no HTML
+function atualizarQuantidade() {
+  const quantidadeElement = document.getElementById("quantidade");
+  const quantidade = quantidadeTransaction();
+  quantidadeElement.textContent = quantidade + " transações";
+}
+
+//soma do valor de split
+function totalSplit() {
+  let split = 0;
+  for (let i = 0; i < transactions.length; i++) {
+    if (transactions[i].split === "sim") {
+      split = split + transactions[i].amount;
+    }
+  }
+  return split;
+}
+
+function atualizarSplit() {
+  const splitElement = document.getElementById("split");
+  const split = totalSplit();
+  splitElement.textContent = formatCurrency(split);
+}
+
+//saldo itau
+function totalItau() {
+  let itau = 0;
+  for (let i = 0; i < transactions.length; i++) {
+    if (transactions[i].account === "itau") {
+      itau = itau + transactions[i].amount;
+    }
+  }
+  return itau;
+}
+
+// Atualiza o valor do saldo no HTML
+function atualizarSaldoItau() {
+  const itauElement = document.getElementById("itau");
+  const Saldoitau = totalItau();
+  itauElement.textContent = formatCurrency(Saldoitau);
+}
+
+//saldo xp
+function totalXp() {
+  let xp = 0;
+  for (let i = 0; i < transactions.length; i++) {
+    if (transactions[i].account === "xp") {
+      xp = xp + transactions[i].amount;
+    }
+  }
+  return xp;
+}
+
+// Atualiza o valor do saldo no HTML
+function atualizarSaldoXp() {
+  const itauElement = document.getElementById("xp");
+  const Saldoxp = totalXp();
+  itauElement.textContent = formatCurrency(Saldoxp);
+}
