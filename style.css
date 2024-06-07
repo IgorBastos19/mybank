@@ -41,6 +41,10 @@ nav {
   cursor: pointer;
 }
 
+#menu-toggle:hover{
+  color: rgb(41, 13, 165);
+}
+
 #navbar {
   display: flex;
   align-items: center;
@@ -105,9 +109,29 @@ nav {
     justify-content: center; /* Centraliza os li verticalmente */
   }
 
+  #navbar.show .icones li{
+    border: none;
+    background-color: #f8f9fa;
+  }
+
+  
+  #navbar.show .icones li svg:hover{
+    color: blue;
+  }
+
+  #navbar.show .botaoAcao li:hover{
+    background-color: rgb(41, 13, 165);
+    transition: 0.4s ease-in-out;
+    border-radius: 3px;
+  }
+
+  #navbar.show .botaoAcao li a:hover{
+    color: white;
+  }
+
   #navbar.show li {
     background-color: #f0f0f0;
-    padding: 20px;
+    padding: 5px 20px 5px;
     text-align: center;
     justify-content: center;
     border: 1px solid #ccc;
@@ -118,3 +142,9 @@ nav {
 .saldo {
   text-align: center;
 }
+
+.saldo-container{
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
