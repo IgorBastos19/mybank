@@ -4,8 +4,7 @@ integrity =
   "sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+6BAMw1LMwNLD69Npy4HI+N9+8BxB";
 crossorigin = "anonymous";
 
-// Este trecho adiciona um listener para o evento DOMContentLoaded, que espera o carregamento completo do DOM. Ele configura a funcionalidade de alternância do menu, onde ao clicar no elemento com id menu-toggle, a classe show será adicionada ou removida do elemento com id navbar.
-
+//Ele configura a funcionalidade de alternância do menu, onde ao clicar no elemento com id menu-toggle, a classe show será adicionada ou removida do elemento com id navbar.
 document.addEventListener("DOMContentLoaded", () => {
   const menuToggle = document.getElementById("menu-toggle");
   const navbar = document.getElementById("navbar");
@@ -16,11 +15,9 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 //Esta variável global armazena todas as transações.
-
 let transactions = [];
 
 // Função para carregar transações do localStorage
-
 function loadTransactions() {
   const savedTransactions = localStorage.getItem("transactions");
   if (savedTransactions) {
@@ -29,7 +26,6 @@ function loadTransactions() {
 }
 
 // Função para salvar transações no localStorage
-
 function saveTransactions() {
   localStorage.setItem("transactions", JSON.stringify(transactions));
 }
@@ -37,6 +33,7 @@ function saveTransactions() {
 // Função para adicionar uma transação
 function addTransaction(
   id,
+  data,
   amount,
   type,
   account,
@@ -44,6 +41,7 @@ function addTransaction(
   split,
   description
 ) {
+
   // Verifica se os parâmetros são válidos
   if (typeof id !== "number" || id <= 0) {
     console.log("Por favor, insira um ID válido.");
@@ -60,10 +58,17 @@ function addTransaction(
     return;
   }
 
+  if(type==="cash-in"){
+    amount=amount
+  }else{
+    amount = -amount
+  }
+
   // Cria um objeto de transação
   const transaction = {
     id: id,
-    amount: parseFloat(amount),
+    data: data,
+    amount: amount,
     type: type,
     account: account,
     category: category,
@@ -73,7 +78,6 @@ function addTransaction(
 
   // Adiciona a transação ao array
   transactions.push(transaction);
-  console.log("Transação adicionada com sucesso:", transaction);
   // Salva as transações no localStorage
   saveTransactions();
   // Atualiza a tabela de transações exibida
@@ -90,6 +94,7 @@ function displayTransactions() {
 
     row.innerHTML = `
             <td>${transaction.id}</td>
+            <td>${transaction.data}</td>
             <td>R$ ${transaction.amount.toFixed(2).replace(".", ",")}</td>
             <td>${transaction.type}</td>
             <td>${transaction.account}</td>
@@ -119,14 +124,17 @@ document.addEventListener("DOMContentLoaded", () => {
     const amount = parseFloat(
       document.getElementById("valor").value.replace(",", ".")
     );
+
     const type = document.getElementById("tipo").value;
+    const data = document.getElementById("data").value;
     const account = document.getElementById("conta").value;
     const category = document.getElementById("classe").value;
     const split = document.getElementById("split").value;
     const description = document.getElementById("descricao").value;
 
-    addTransaction(id, amount, type, account, category, split, description);
+    addTransaction(id, data, amount, type, account, category, split, description);
 
+    
     form.reset(); // Limpa o formulário após a submissão
   });
 });
@@ -260,4 +268,117 @@ function atualizarSaldoXp() {
   const itauElement = document.getElementById("xp");
   const Saldoxp = totalXp();
   itauElement.textContent = formatCurrency(Saldoxp);
+}
+
+function calcularTotalPorCategoria(categoria) {
+  let total = 0;
+  for (let i = 0; i < transactions.length; i++) {
+    if (transactions[i].category === categoria) {
+      total += transactions[i].amount;
+    }
+  }
+  return total;
+}
+
+// Exemplos de uso:
+
+// Saldo do salário
+let totalSalario = calcularTotalPorCategoria("salario");
+
+// Saldo da energia
+let totalEnergia = calcularTotalPorCategoria("energia");
+
+// Saldo do investimento
+let totalInvestimento = calcularTotalPorCategoria("investimento");
+
+// Saldo do lanche
+let totalLanche = calcularTotalPorCategoria("lanche");
+
+// Saldo do transporte
+let totalTransporte = calcularTotalPorCategoria("transporte");
+
+// Saldo da alimentação
+let totalAlimentacao = calcularTotalPorCategoria("alimentação");
+
+// Saldo da educação
+let totalEducacao = calcularTotalPorCategoria("educação");
+
+// Saldo da saúde
+let totalSaude = calcularTotalPorCategoria("saude");
+
+// Saldo do entretenimento
+let totalEntretenimento = calcularTotalPorCategoria("entretenimento");
+
+// Saldo do vestuário
+let totalVestuario = calcularTotalPorCategoria("vesturaio");
+
+// Saldo da internet
+let totalInternet = calcularTotalPorCategoria("internet");
+
+// Saldo do telefone
+let totalTelefone = calcularTotalPorCategoria("telefone");
+
+// Saldo da água
+let totalAgua = calcularTotalPorCategoria("agua");
+
+// Saldo do aluguel
+let totalAluguel = calcularTotalPorCategoria("aluguel");
+
+document.addEventListener('DOMContentLoaded', () => {
+  const ctx = document.getElementById('transactionChart').getContext('2d');
+  const transactionChart = new Chart(ctx, {
+      type: 'pie',
+      data: {
+          labels: ['Salário', 'Energia', 'Investimento', 'Lanche', 'Transporte', 'Alimentação', 'Educação', 'Saúde', 'Entretenimento', 'Vestuário', 'Internet', 'Telefone', 'Água', 'Aluguel'],
+          datasets: [{
+              label: 'Transações',
+              data: [calcularTotalPorCategoria("salario"), calcularTotalPorCategoria("energia"), calcularTotalPorCategoria("investimentos"), calcularTotalPorCategoria("lanche"),  calcularTotalPorCategoria("vestuario"), calcularTotalPorCategoria("transporte"), calcularTotalPorCategoria("alimentacao"), calcularTotalPorCategoria("educacao"), calcularTotalPorCategoria("saude"), calcularTotalPorCategoria("entretenimento"), calcularTotalPorCategoria("vestuario"), calcularTotalPorCategoria("internet"), calcularTotalPorCategoria("telefone"), calcularTotalPorCategoria("agua"), calcularTotalPorCategoria("aluguel")],
+              backgroundColor: [
+                  'rgba(255, 99, 132, 0.6)',
+                  'rgba(54, 162, 235, 0.6)',
+                  'rgba(255, 206, 86, 0.6)',
+                  'rgba(75, 192, 192, 0.6)',
+                  'rgba(153, 102, 255, 0.6)',
+                  'rgba(255, 159, 64, 0.6)',
+                  'rgba(255, 99, 132, 0.6)',
+                  'rgba(54, 162, 235, 0.6)',
+                  'rgba(255, 206, 86, 0.6)',
+                  'rgba(75, 192, 192, 0.6)',
+                  'rgba(153, 102, 255, 0.6)',
+                  'rgba(255, 159, 64, 0.6)',
+                  'rgba(255, 99, 132, 0.6)',
+                  'rgba(54, 162, 235, 0.6)'
+              ],
+              borderWidth: 1
+          }]
+      },
+    });
+});
+
+// Função para exibir as transações na tabela
+function displayTransactions(dataFiltro) {
+  const transactionTableBody = document.getElementById("transactionTableBody");
+  transactionTableBody.innerHTML = "";
+
+  transactions.forEach((transaction) => {
+    // Verifica se a transação ocorreu na data especificada, se houver um filtro de data
+    if (dataFiltro && transaction.data !== dataFiltro) {
+      return; // Pula para a próxima transação se não corresponder à data do filtro
+    }
+
+    const row = document.createElement("tr");
+
+    row.innerHTML = `
+            <td>${transaction.id}</td>
+            <td>${transaction.data}</td>
+            <td>R$ ${transaction.amount.toFixed(2).replace(".", ",")}</td>
+            <td>${transaction.type}</td>
+            <td>${transaction.account}</td>
+            <td>${transaction.category}</td>
+            <td>${transaction.split}</td>
+            <td>${transaction.description}</td>
+        `;
+
+    transactionTableBody.appendChild(row);
+  });
 }
